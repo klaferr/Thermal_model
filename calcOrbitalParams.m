@@ -65,6 +65,7 @@ sol_dist = s.a*(1 - ecc*cos(EA2));               % Solar Distance
 lsrad = mod((TA2 + Lsp), (2*pi));  % in radians for taking sin of
 ls = radtodeg(TA2 + Lsp); % so it wont wrap around in plots
 lsWrapped = radtodeg(mod((TA2 + Lsp), (2*pi)));   % Solar longitude in degrees
+
 sin_dec = sin(obl)*sin(lsrad);               % Sine of solar declination
 cos_dec = sqrt(1 - sin_dec.^2);
 
@@ -75,6 +76,7 @@ for ii = 1:nStepsInYear
     lsNew(ii) = ls(ii) - lsOvershoot*(ii/nStepsInYear);
 end
 lsWrapped = mod(lsNew, 360); % Ls values between 0 and 360
+
 whereCrossOver360to0 = find(floor(lsWrapped)==0,1); % First index after Ls wrapped from 360 back to 0
 
 hr = mod((t2/s.rot * 2*pi), (2*pi)) - pi;  % Local mean true solar time in hour angle (-pi to pi)- cant be used to compare to ephemeris time because fixed rotation...calculated as if was a mean solar
@@ -120,7 +122,6 @@ atmosAtt = (1-s.scatteredVisPerc-s.downwellingPerc).^(1./maxCoefAtmosAtt);
 sfTOA = sf;
 sf = sf.*atmosAtt;
 
-
 annual_sf = sum(sf*dt);   % Total annual energy
 fprintf('Solar Flux Min = %8.4f, Max = %8.4f and Mean = %8.4f [W/m^2]\n', min(sf), max(sf), mean(sf));
 fprintf ('Total Annual Solar Flux = %.6e [W/m^2] \n', annual_sf);
@@ -149,6 +150,7 @@ else
     flatIR = zeros(nStepsInYear,1);
     sky = 1;
 end
+
 
 % Calculate frost point temperatures vs time for a given elevation
 atmPressTerms = [7.97078 -0.539781 0.468818 0.368771 -0.392702 0.0206071 -0.0224410 -0.0326866 -0.00261966 0.0145776 -0.000184519];
